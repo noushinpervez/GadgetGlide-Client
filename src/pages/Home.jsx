@@ -17,11 +17,13 @@ const Home = () => {
     const [brands, setBrands] = useState([]);
     const [priceSort, setPriceSort] = useState('');
     const [dateSort, setDateSort] = useState('');
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/products', {
+                const response = await axios.get('https://gadgetglide.vercel.app/products', {
                     params: {
                         page: currentPage,
                         search,
@@ -29,6 +31,8 @@ const Home = () => {
                         brandName: brands.join(','),
                         priceSort,
                         dateSort,
+                        minPrice,
+                        maxPrice
                     },
                 });
                 setProducts(response.data.products);
@@ -39,7 +43,7 @@ const Home = () => {
         };
 
         fetchProducts();
-    }, [currentPage, search, categories, brands, priceSort, dateSort]);
+    }, [currentPage, search, categories, brands, priceSort, dateSort, minPrice, maxPrice]);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -89,7 +93,7 @@ const Home = () => {
                 {/* Search */ }
                 <div className="mt-8 lg:grid lg:grid-cols-4 items-start gap-8">
                     <div className="space-y-4 block">
-                        <SearchBar search={search} setSearch={setSearch} />
+                        <SearchBar search={ search } setSearch={ setSearch } />
 
                         <SortBy setPriceSort={ setPriceSort } setDateSort={ setDateSort } />
 
@@ -100,30 +104,34 @@ const Home = () => {
                             <div className="mt-1 space-y-2">
                                 <CategoryFilter categories={ categories } handleCategoryChange={ handleCategoryChange } resetCategories={ resetCategories } />
 
-                                <PriceFilter />
-                                
+                                <PriceFilter minPrice={ minPrice } maxPrice={ maxPrice } setMinPrice={ setMinPrice } setMaxPrice={ setMaxPrice } />
+
                                 <BrandFilter brands={ brands } handleBrandChange={ handleBrandChange } resetBrands={ resetBrands } />
                             </div>
                         </div>
                     </div>
 
-                    {/* Cards */ }
                     <div className="lg:col-span-3 lg:mt-0 mt-8">
-                        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            { products.map(product => (
-                                <ProductCard key={ product._id } product={ product } />
-                            )) }
-                        </ul>
+                        { products.length > 0 ? (
+                            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                { products.map(product => (
+                                    <ProductCard key={ product._id } product={ product } />
+                                )) }
+                            </ul>
+                        ) : (
+                            <p className="text-center text-gray-500 font-semibold">No products found</p>
+                        ) }
                     </div>
                 </div>
             </div>
 
-            {/* Pagination */}
-            <Pagination
-                currentPage={ currentPage }
-                totalPages={ totalPages }
-                onPageChange={ handlePageChange }
-            />
+            { totalPages > 1 && (
+                <Pagination
+                    currentPage={ currentPage }
+                    totalPages={ totalPages }
+                    onPageChange={ handlePageChange }
+                />
+            ) }
         </section>
     );
 };
