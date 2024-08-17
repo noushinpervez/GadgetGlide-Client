@@ -1,7 +1,71 @@
+import { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
 import ProductCard from "../components/ProductCard";
+import axios from "axios";
 
 const Home = () => {
+    const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [search, setSearch] = useState('');
+    const [categories, setCategories] = useState([]);
+    const [brands, setBrands] = useState([]);
+    const [priceSort, setPriceSort] = useState('');
+    const [dateSort, setDateSort] = useState('');
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/products', {
+                    params: {
+                        page: currentPage,
+                        search,
+                        category: categories.join(','),
+                        brandName: brands.join(','),
+                        priceSort,
+                        dateSort,
+                    },
+                });
+                setProducts(response.data.products);
+                setTotalPages(response.data.totalPages);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+
+        fetchProducts();
+    }, [currentPage, search, categories, brands, priceSort, dateSort]);
+
+    const handleCategoryChange = (category) => {
+        setCategories(prevCategories =>
+            prevCategories.includes(category)
+                ? prevCategories.filter(c => c !== category)
+                : [...prevCategories, category]
+        );
+    };
+
+    const handleBrandChange = (brand) => {
+        setBrands(prevBrands =>
+            prevBrands.includes(brand)
+                ? prevBrands.filter(b => b !== brand)
+                : [...prevBrands, brand]
+        );
+    };
+
+    const resetCategories = () => {
+        setCategories([]);
+        document.querySelectorAll('.category-filter').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    };
+
+    const resetBrands = () => {
+        setBrands([]);
+        document.querySelectorAll('.brand-filter').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    };
+
     return (
         <section className="my-24">
             <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
@@ -9,10 +73,11 @@ const Home = () => {
                     <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">Product Collection</h2>
 
                     <p className="mt-4 max-w-md text-gray-500">
-                        40 items in product
+                        { products.length } items in product
                     </p>
                 </header>
 
+                {/* Search */ }
                 <div className="mt-8 lg:grid lg:grid-cols-4 items-start gap-8">
                     <div className="space-y-4 block">
                         <div className="relative">
@@ -22,7 +87,9 @@ const Home = () => {
                                 type="text"
                                 id="Search"
                                 placeholder="Search for product"
-                                className="w-full rounded-md border-gray-300 py-2.5 pe-10 shadow-sm sm:text-sm"
+                                className="w-full rounded-md border-gray-300 py-4 pe-10 shadow-sm sm:text-sm"
+                                value={ search }
+                                onChange={ (e) => setSearch(e.target.value) }
                             />
 
                             <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
@@ -47,21 +114,37 @@ const Home = () => {
                             </span>
                         </div>
 
+                        {/* Sort By */ }
                         <div>
-                            <label htmlFor="SortBy" className="block text-xs font-medium text-gray-700"> Sort By </label>
+                            <label htmlFor="SortBy" className="block text-xs font-medium text-gray-700">Sort By</label>
 
-                            <select id="SortBy" className="mt-1 rounded border-gray-300 text-sm p-4">
-                                <option>Sort By</option>
-                                <option value="Title, DESC">Date, DESC</option>
-                                <option value="Price, DESC">Price, DESC</option>
-                                <option value="Price, ASC">Price, ASC</option>
+                            <select
+                                id="SortBy"
+                                className="mt-1 rounded w-full border-gray-300 text-sm p-4"
+                                onChange={ (e) => {
+                                    const value = e.target.value;
+                                    if (value.includes("Price")) {
+                                        setPriceSort(value.includes("ASC") ? 'asc' : 'desc');
+                                        setDateSort('');
+                                    } else if (value.includes("Date")) {
+                                        setDateSort('desc');
+                                        setPriceSort('');
+                                    }
+                                } }
+                            >
+                                <option value="">Sort By</option>
+                                <option value="Date, DESC">Date, Newest First</option>
+                                <option value="Price, DESC">Price, High to Low</option>
+                                <option value="Price, ASC">Price, Low to High</option>
                             </select>
                         </div>
 
+                        {/* Filters */ }
                         <div>
                             <p className="block text-xs font-medium text-gray-700">Filters</p>
 
                             <div className="mt-1 space-y-2">
+                                {/* Category Filter */ }
                                 <details
                                     className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
                                 >
@@ -90,20 +173,22 @@ const Home = () => {
 
                                     <div className="border-t border-gray-200 bg-white">
                                         <header className="flex items-center justify-between p-4">
-                                            <span className="text-sm text-gray-700">0 Selected</span>
+                                            <span className="text-sm text-gray-700">{ categories.length } Selected</span>
 
-                                            <button type="button" className="text-sm text-gray-900 underline underline-offset-4">
+                                            <button type="button" className="text-sm text-gray-900 underline underline-offset-4" onClick={ resetCategories }>
                                                 Reset
                                             </button>
                                         </header>
 
                                         <ul className="space-y-1 border-t border-gray-200 p-4">
                                             <li>
-                                                <label htmlFor="FilterInStock" className="inline-flex items-center gap-2">
+                                                <label htmlFor="FilterSmartphone" className="inline-flex items-center gap-2">
                                                     <input
                                                         type="checkbox"
-                                                        id="FilterInStock"
-                                                        className="size-5 rounded border-gray-300"
+                                                        id="FilterSmartphone"
+                                                        value="Smartphones"
+                                                        className="size-5 rounded border-gray-300 category-filter"
+                                                        onChange={ () => handleCategoryChange('Smartphones') }
                                                     />
 
                                                     <span className="text-sm font-medium text-gray-700">Smartphone</span>
@@ -111,11 +196,13 @@ const Home = () => {
                                             </li>
 
                                             <li>
-                                                <label htmlFor="FilterPreOrder" className="inline-flex items-center gap-2">
+                                                <label htmlFor="FilterLaptop" className="inline-flex items-center gap-2">
                                                     <input
                                                         type="checkbox"
-                                                        id="FilterPreOrder"
-                                                        className="size-5 rounded border-gray-300"
+                                                        id="FilterLaptop"
+                                                        value="Laptops"
+                                                        className="size-5 rounded border-gray-300 category-filter"
+                                                        onChange={ () => handleCategoryChange('Laptops') }
                                                     />
 
                                                     <span className="text-sm font-medium text-gray-700">Laptop</span>
@@ -123,14 +210,16 @@ const Home = () => {
                                             </li>
 
                                             <li>
-                                                <label htmlFor="FilterOutOfStock" className="inline-flex items-center gap-2">
+                                                <label htmlFor="FilterAccessory" className="inline-flex items-center gap-2">
                                                     <input
                                                         type="checkbox"
-                                                        id="FilterOutOfStock"
-                                                        className="size-5 rounded border-gray-300"
+                                                        id="FilterAccessory"
+                                                        value="Accessories"
+                                                        className="size-5 rounded border-gray-300 category-filter"
+                                                        onChange={ () => handleCategoryChange('Accessories') }
                                                     />
 
-                                                    <span className="text-sm font-medium text-gray-700">Accessory</span>
+                                                    <span className="text-sm font-medium text-gray-700">Accessories</span>
                                                 </label>
                                             </li>
                                         </ul>
@@ -143,7 +232,7 @@ const Home = () => {
                                     <summary
                                         className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition"
                                     >
-                                        <span className="text-sm font-medium"> Price</span>
+                                        <span className="text-sm font-medium">Price</span>
 
                                         <span className="transition group-open:-rotate-180">
                                             <svg
@@ -200,13 +289,14 @@ const Home = () => {
                                     </div>
                                 </details>
 
+                                {/* Brand Filter */ }
                                 <details
                                     className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
                                 >
                                     <summary
                                         className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition"
                                     >
-                                        <span className="text-sm font-medium"> Brand</span>
+                                        <span className="text-sm font-medium">Brand</span>
 
                                         <span className="transition group-open:-rotate-180">
                                             <svg
@@ -228,20 +318,22 @@ const Home = () => {
 
                                     <div className="border-t border-gray-200 bg-white">
                                         <header className="flex items-center justify-between p-4">
-                                            <span className="text-sm text-gray-700">0 Selected</span>
+                                            <span className="text-sm text-gray-700">{ brands.length } Selected</span>
 
-                                            <button type="button" className="text-sm text-gray-900 underline underline-offset-4">
+                                            <button type="button" className="text-sm text-gray-900 underline underline-offset-4" onClick={ resetBrands }>
                                                 Reset
                                             </button>
                                         </header>
 
                                         <ul className="space-y-1 border-t border-gray-200 p-4">
                                             <li>
-                                                <label htmlFor="FilterRed" className="inline-flex items-center gap-2">
+                                                <label htmlFor="FilterApple" className="inline-flex items-center gap-2">
                                                     <input
                                                         type="checkbox"
-                                                        id="FilterRed"
-                                                        className="size-5 rounded border-gray-300"
+                                                        id="FilterApple"
+                                                        value="Apple"
+                                                        className="size-5 rounded border-gray-300 brand-filter"
+                                                        onChange={ () => handleBrandChange('Apple') }
                                                     />
 
                                                     <span className="text-sm font-medium text-gray-700">Apple</span>
@@ -249,11 +341,13 @@ const Home = () => {
                                             </li>
 
                                             <li>
-                                                <label htmlFor="FilterBlue" className="inline-flex items-center gap-2">
+                                                <label htmlFor="FilterSamsung" className="inline-flex items-center gap-2">
                                                     <input
                                                         type="checkbox"
-                                                        id="FilterBlue"
-                                                        className="size-5 rounded border-gray-300"
+                                                        id="FilterSamsung"
+                                                        value="Samsung"
+                                                        className="size-5 rounded border-gray-300 brand-filter"
+                                                        onChange={ () => handleBrandChange('Samsung') }
                                                     />
 
                                                     <span className="text-sm font-medium text-gray-700">Samsung</span>
@@ -261,11 +355,13 @@ const Home = () => {
                                             </li>
 
                                             <li>
-                                                <label htmlFor="FilterGreen" className="inline-flex items-center gap-2">
+                                                <label htmlFor="FilterXiaomi" className="inline-flex items-center gap-2">
                                                     <input
                                                         type="checkbox"
                                                         id="FilterGreen"
-                                                        className="size-5 rounded border-gray-300"
+                                                        value="Xiaomi"
+                                                        className="size-5 rounded border-gray-300 brand-filter"
+                                                        onChange={ () => handleBrandChange('Xiaomi') }
                                                     />
 
                                                     <span className="text-sm font-medium text-gray-700">Xiaomi</span>
@@ -278,10 +374,12 @@ const Home = () => {
                         </div>
                     </div>
 
-                    {/* Cards */}
+                    {/* Cards */ }
                     <div className="lg:col-span-3 lg:mt-0 mt-8">
                         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            <ProductCard />
+                            { products.map(product => (
+                                <ProductCard key={ product._id } product={ product } />
+                            )) }
                         </ul>
                     </div>
                 </div>
