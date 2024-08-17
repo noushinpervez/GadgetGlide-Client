@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import useAuth from '../hooks/useAuth'; // Your custom hook for authentication
+import useAuth from '../hooks/useAuth';
 
 const AuthModal = ({ isOpen, onClose }) => {
     const { signInUser, createUser, googleLogin } = useAuth();

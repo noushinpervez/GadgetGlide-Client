@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const CategoryFilter = ({ categories, handleCategoryChange, resetCategories }) => {
     return (
         <details className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
@@ -70,6 +72,12 @@ const CategoryFilter = ({ categories, handleCategoryChange, resetCategories }) =
             </div>
         </details>
     );
+};
+
+CategoryFilter.propTypes = {
+    categories: PropTypes.arrayOf(PropTypes.string),
+    handleCategoryChange: PropTypes.func,
+    resetCategories: PropTypes.func,
 };
 
 export default CategoryFilter;

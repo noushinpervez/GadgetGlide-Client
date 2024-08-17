@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const PriceFilter = ({ minPrice, maxPrice, setMinPrice, setMaxPrice }) => {
     const handleReset = () => {
@@ -63,6 +63,13 @@ const PriceFilter = ({ minPrice, maxPrice, setMinPrice, setMaxPrice }) => {
             </div>
         </details>
     );
+};
+
+PriceFilter.propTypes = {
+    minPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    maxPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    setMinPrice: PropTypes.func,
+    setMaxPrice: PropTypes.func,
 };
 
 export default PriceFilter;

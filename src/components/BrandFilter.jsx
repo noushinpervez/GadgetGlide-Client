@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const BrandFilter = ({ brands, handleBrandChange, resetBrands }) => {
     return (
         <details className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
@@ -70,6 +72,12 @@ const BrandFilter = ({ brands, handleBrandChange, resetBrands }) => {
             </div>
         </details>
     );
+};
+
+BrandFilter.propTypes = {
+    brands: PropTypes.arrayOf(PropTypes.string), 
+    handleBrandChange: PropTypes.func,
+    resetBrands: PropTypes.func,
 };
 
 export default BrandFilter;

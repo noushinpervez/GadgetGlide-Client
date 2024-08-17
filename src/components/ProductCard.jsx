@@ -1,4 +1,5 @@
 import Rating from "./Rating";
+import PropTypes from 'prop-types';
 
 const ProductCard = ({ product }) => {
     return (
@@ -50,6 +51,10 @@ const ProductCard = ({ product }) => {
             </a>
         </li>
     );
+};
+
+ProductCard.propTypes = {
+    product: PropTypes.object,
 };
 
 export default ProductCard;

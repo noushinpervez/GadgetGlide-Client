@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const generateStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -25,6 +27,10 @@ const Rating = ({ rating }) => {
             </span>
         </div>
     );
+};
+
+Rating.propTypes = {
+    rating: PropTypes.number,
 };
 
 export default Rating;

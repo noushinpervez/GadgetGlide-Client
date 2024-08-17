@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     const handlePageClick = (pageNumber) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -63,6 +65,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             </li>
         </ol>
     );
+};
+
+Pagination.propTypes = {
+    currentPage: PropTypes.number,
+    totalPages: PropTypes.number, 
+    onPageChange: PropTypes.func,
 };
 
 export default Pagination;
