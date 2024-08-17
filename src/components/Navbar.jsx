@@ -1,4 +1,12 @@
+import { useState } from "react";
+import AuthModal from "./AuthModal";
+
 const Navbar = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenModal = () => setIsModalOpen(true);
+    const handleCloseModal = () => setIsModalOpen(false);
+
     return (
         <div className="bg-blueGray-200 shadow">
             <div className="container mx-auto px-4">
@@ -19,8 +27,8 @@ const Navbar = () => {
                     </div>
 
                     <div className="hidden sm:flex sm:items-center">
-                        <a href="#" className="text-indigo-600 text-sm font-semibold hover:text-indigo-600 mr-4">Sign in</a>
-                        <a href="#" className="text-blueGray-700 text-sm font-semibold border border-gray-400 px-4 py-2 rounded-lg hover:text-indigo-600 hover:border-indigo-600">Sign up</a>
+                        <a href="#" onClick={handleOpenModal} className="text-indigo-600 text-sm font-semibold hover:text-indigo-600 mr-4">Sign in</a>
+                        <a href="#" onClick={handleOpenModal} className="text-blueGray-700 text-sm font-semibold border border-gray-400 px-4 py-2 rounded-lg hover:text-indigo-600 hover:border-indigo-600">Sign up</a>
                     </div>
 
                     <div className="sm:hidden cursor-pointer">
@@ -36,12 +44,13 @@ const Navbar = () => {
                         <a href="#" className="text-blueGray-700 text-sm font-semibold hover:text-indigo-600 mb-1">Offers</a>
                         <a href="#" className="text-blueGray-700 text-sm font-semibold hover:text-indigo-600 mb-1">Cart</a>
                         <div className="flex justify-between items-center border-t-2 pt-2">
-                            <a href="#" className="text-blueGray-700 text-sm font-semibold hover:text-indigo-600 mr-4">Sign in</a>
-                            <a href="#" className="text-blueGray-700 text-sm font-semibold border px-4 py-1 rounded-lg border-gray-400 hover:text-indigo-600 hover:border-indigo-600">Sign up</a>
+                            <a href="#" onClick={handleOpenModal} className="text-blueGray-700 text-sm font-semibold hover:text-indigo-600 mr-4">Sign in</a>
+                            <a href="#" onClick={handleOpenModal} className="text-blueGray-700 text-sm font-semibold border px-4 py-1 rounded-lg border-gray-400 hover:text-indigo-600 hover:border-indigo-600">Sign up</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <AuthModal isOpen={ isModalOpen } onClose={ handleCloseModal } />
         </div>
     );
 };
