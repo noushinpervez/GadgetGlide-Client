@@ -1,10 +1,17 @@
-const Pagination = () => {
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+    const handlePageClick = (pageNumber) => {
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            onPageChange(pageNumber);
+        }
+    };
+
     return (
         <ol className="flex justify-center gap-1 text-xs font-medium">
             <li>
-                <a
-                    href="#"
+                <button
+                    onClick={ () => handlePageClick(currentPage - 1) }
                     className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                    disabled={ currentPage === 1 }
                 >
                     <span className="sr-only">Prev Page</span>
                     <svg
@@ -19,44 +26,25 @@ const Pagination = () => {
                             clipRule="evenodd"
                         />
                     </svg>
-                </a>
+                </button>
             </li>
+
+            { Array.from({ length: totalPages }, (_, index) => index + 1).map(pageNumber => (
+                <li key={ pageNumber }>
+                    <button
+                        onClick={ () => handlePageClick(pageNumber) }
+                        className={ `block size-8 rounded border text-center leading-8 ${pageNumber === currentPage ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-gray-100 bg-white text-gray-900'}` }
+                    >
+                        { pageNumber }
+                    </button>
+                </li>
+            )) }
 
             <li>
-                <a
-                    href="#"
-                    className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
-                >
-                    1
-                </a>
-            </li>
-
-            <li className="block size-8 rounded border-indigo-600 bg-indigo-600 text-center leading-8 text-white">
-                2
-            </li>
-
-            <li>
-                <a
-                    href="#"
-                    className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
-                >
-                    3
-                </a>
-            </li>
-
-            <li>
-                <a
-                    href="#"
-                    className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
-                >
-                    4
-                </a>
-            </li>
-
-            <li>
-                <a
-                    href="#"
+                <button
+                    onClick={ () => handlePageClick(currentPage + 1) }
                     className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                    disabled={ currentPage === totalPages }
                 >
                     <span className="sr-only">Next Page</span>
                     <svg
@@ -71,7 +59,7 @@ const Pagination = () => {
                             clipRule="evenodd"
                         />
                     </svg>
-                </a>
+                </button>
             </li>
         </ol>
     );

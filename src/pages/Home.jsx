@@ -41,6 +41,10 @@ const Home = () => {
         fetchProducts();
     }, [currentPage, search, categories, brands, priceSort, dateSort]);
 
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
     const handleCategoryChange = (category) => {
         setCategories(prevCategories =>
             prevCategories.includes(category)
@@ -115,7 +119,11 @@ const Home = () => {
             </div>
 
             {/* Pagination */}
-            <Pagination />
+            <Pagination
+                currentPage={ currentPage }
+                totalPages={ totalPages }
+                onPageChange={ handlePageChange }
+            />
         </section>
     );
 };
