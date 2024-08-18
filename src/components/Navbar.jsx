@@ -1,14 +1,22 @@
 import { useState } from "react";
 import AuthModal from "./AuthModal";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
+    const { user, logout, loading } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleLogout = () => {
+        logout()
+            .then(() => { })
+            .catch(error => console.log(error));
+    };
 
     const handleOpenModal = () => setIsModalOpen(true);
     const handleCloseModal = () => setIsModalOpen(false);
 
     return (
-        <div className="bg-blueGray-200 shadow">
+        <div className="bg-blueGray-200">
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between py-4">
                     <a href="/">
@@ -27,8 +35,35 @@ const Navbar = () => {
                     </div>
 
                     <div className="hidden sm:flex sm:items-center">
-                        <a href="#" onClick={handleOpenModal} className="text-indigo-600 text-sm font-semibold hover:text-indigo-600 mr-4">Sign in</a>
-                        <a href="#" onClick={handleOpenModal} className="text-blueGray-700 text-sm font-semibold border border-gray-400 px-4 py-2 rounded-lg hover:text-indigo-600 hover:border-indigo-600">Sign up</a>
+                        { loading ? (
+                            <div></div>
+                        ) : user ? (
+                                <>
+                                    <div>
+                                        <span className="group relative">
+                                            <div className="absolute bottom-[calc(100%)] left-[50%] -translate-x-[50%] hidden group-hover:block w-auto">
+                                                <div className="bottom-full right-0 rounded bg-blueGray-800 px-4 py-1 text-xs text-white whitespace-nowrap">
+                                                    { user.email }
+                                                    <svg className="absolute left-0 top-full h-2 w-full text-blueGray-800" x="0px" y="0px" viewBox="0 0 255 255" xmlSpace="preserve"><polygon className="fill-current" points="0,0 127.5,127.5 255,0" /></svg>
+                                                </div>
+                                            </div>
+                                            <span>
+                                                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.5" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" fill="#1C274C" />
+                                                    <path d="M16.807 19.0112C15.4398 19.9504 13.7841 20.5 12 20.5C10.2159 20.5 8.56023 19.9503 7.193 19.0111C6.58915 18.5963 6.33109 17.8062 6.68219 17.1632C7.41001 15.8302 8.90973 15 12 15C15.0903 15 16.59 15.8303 17.3178 17.1632C17.6689 17.8062 17.4108 18.5964 16.807 19.0112Z" fill="#1C274C" />
+                                                    <path d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3432 6 9.00004 7.34315 9.00004 9C9.00004 10.6569 10.3432 12 12 12Z" fill="#1C274C" />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <button className="ml-3 inline-block rounded border border-indigo-600 px-6 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500" onClick={ handleLogout }>Logout</button>
+                                </>
+                            ) : (
+                                <>
+                                    <a href="#" onClick={ handleOpenModal } className="text-indigo-600 text-sm font-semibold hover:text-indigo-600 mr-4">Sign in</a>
+                                    <a href="#" onClick={ handleOpenModal } className="text-blueGray-700 text-sm font-semibold border border-gray-400 px-4 py-2 rounded hover:text-indigo-600 hover:border-indigo-600">Sign up</a>
+                                </>
+                            )}
                     </div>
 
                     <div className="sm:hidden cursor-pointer">
@@ -44,8 +79,8 @@ const Navbar = () => {
                         <a href="#" className="text-blueGray-700 text-sm font-semibold hover:text-indigo-600 mb-1">Offers</a>
                         <a href="#" className="text-blueGray-700 text-sm font-semibold hover:text-indigo-600 mb-1">Cart</a>
                         <div className="flex justify-between items-center border-t-2 pt-2">
-                            <a href="#" onClick={handleOpenModal} className="text-blueGray-700 text-sm font-semibold hover:text-indigo-600 mr-4">Sign in</a>
-                            <a href="#" onClick={handleOpenModal} className="text-blueGray-700 text-sm font-semibold border px-4 py-1 rounded-lg border-gray-400 hover:text-indigo-600 hover:border-indigo-600">Sign up</a>
+                            <a href="#" onClick={ handleOpenModal } className="text-blueGray-700 text-sm font-semibold hover:text-indigo-600 mr-4">Sign in</a>
+                            <a href="#" onClick={ handleOpenModal } className="text-blueGray-700 text-sm font-semibold border px-4 py-1 rounded border-gray-400 hover:text-indigo-600 hover:border-indigo-600">Sign up</a>
                         </div>
                     </div>
                 </div>

@@ -60,12 +60,51 @@ const BrandFilter = ({ brands, handleBrandChange, resetBrands }) => {
                         <label htmlFor="FilterXiaomi" className="inline-flex items-center gap-2">
                             <input
                                 type="checkbox"
-                                id="FilterGreen"
+                                id="FilterXiaomi"
                                 value="Xiaomi"
                                 className="size-5 rounded border-gray-300 brand-filter"
                                 onChange={ () => handleBrandChange('Xiaomi') }
                             />
                             <span className="text-sm font-medium text-gray-700">Xiaomi</span>
+                        </label>
+                    </li>
+
+                    <li>
+                        <label htmlFor="FilterOnePlus" className="inline-flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="FilterOnePlus"
+                                value="OnePlus"
+                                className="size-5 rounded border-gray-300 brand-filter"
+                                onChange={ () => handleBrandChange('OnePlus') }
+                            />
+                            <span className="text-sm font-medium text-gray-700">OnePlus</span>
+                        </label>
+                    </li>
+
+                    <li>
+                        <label htmlFor="FilterVivo" className="inline-flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="FilterVivo"
+                                value="Vivo"
+                                className="size-5 rounded border-gray-300 brand-filter"
+                                onChange={ () => handleBrandChange('Vivo') }
+                            />
+                            <span className="text-sm font-medium text-gray-700">Vivo</span>
+                        </label>
+                    </li>
+
+                    <li>
+                        <label htmlFor="FilterHuawei" className="inline-flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="FilterHuawei"
+                                value="Huawei"
+                                className="size-5 rounded border-gray-300 brand-filter"
+                                onChange={ () => handleBrandChange('Huawei') }
+                            />
+                            <span className="text-sm font-medium text-gray-700">Huawei</span>
                         </label>
                     </li>
                 </ul>

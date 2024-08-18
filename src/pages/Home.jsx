@@ -7,11 +7,13 @@ import SortBy from "../components/SortBy";
 import CategoryFilter from "../components/CategoryFilter";
 import PriceFilter from "../components/PriceFilter";
 import BrandFilter from "../components/BrandFilter";
+import Skeleton from "../components/Skeleton";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [totalProducts, setTotalProducts] = useState(0);
     const [search, setSearch] = useState('');
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
@@ -19,9 +21,15 @@ const Home = () => {
     const [dateSort, setDateSort] = useState('');
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [search, categories, brands, priceSort, dateSort, minPrice, maxPrice]);
 
     useEffect(() => {
         const fetchProducts = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get('https://gadgetglide.vercel.app/products', {
                     params: {
@@ -37,8 +45,11 @@ const Home = () => {
                 });
                 setProducts(response.data.products);
                 setTotalPages(response.data.totalPages);
+                setTotalProducts(response.data.total);
             } catch (error) {
                 console.error("Error fetching products:", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -86,7 +97,7 @@ const Home = () => {
                     <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">Product Collection</h2>
 
                     <p className="mt-4 max-w-md text-gray-500">
-                        { products.length } items in product
+                        Showing page { currentPage } of { totalPages } - Total products: { totalProducts }
                     </p>
                 </header>
 
@@ -112,14 +123,25 @@ const Home = () => {
                     </div>
 
                     <div className="lg:col-span-3 lg:mt-0 mt-8">
-                        { products.length > 0 ? (
+                        { loading ? (
                             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                { products.map(product => (
-                                    <ProductCard key={ product._id } product={ product } />
+                                { [...Array(6)].map((_, index) => (
+                                    <Skeleton key={ index } />
                                 )) }
                             </ul>
                         ) : (
-                            <p className="text-center text-gray-500 font-semibold">No products found</p>
+                            <>
+                                { products.length > 0 ? (
+                                    <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                        { products.map(product => (
+                                            <ProductCard key={ product._id } product={ product } />
+                                        )) }
+                                    </ul>
+
+                                ) : (
+                                    <p className="text-center text-gray-500 font-semibold">No products found</p>
+                                ) }
+                            </>
                         ) }
                     </div>
                 </div>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const ProductCard = ({ product }) => {
     return (
         <li>
-            <a href="#" className="group block overflow-hidden">
+            <a className="group block overflow-hidden">
                 <img
                     src={product.image}
                     alt={product.productName}
@@ -26,12 +26,12 @@ const ProductCard = ({ product }) => {
                     </div>
 
                     <h3
-                        className="text-xs text-indigo-600"
+                        className="text-sm text-indigo-600"
                     >
                         { product.brandName }
                     </h3>
 
-                    <p className="text-xs mt-2 text-gray-500 text-ellipsis line-clamp-3">{ product.description }</p>
+                    <p className="text-sm mt-2 text-gray-500 text-ellipsis line-clamp-3">{ product.description }</p>
 
                     <Rating rating={ product.ratings } />
 
@@ -39,7 +39,7 @@ const ProductCard = ({ product }) => {
                         <p>
                             <span className="sr-only">Regular Price</span>
 
-                            <p className="tracking-wider text-gray-900"><span className="text-lg">৳</span>{ product.price }</p>
+                            <p className="tracking-widest text-gray-900">৳{ product.price }</p>
                         </p>
                         <p>
                             <span className="sr-only">Date</span>

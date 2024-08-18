@@ -35,9 +35,9 @@ const CategoryFilter = ({ categories, handleCategoryChange, resetCategories }) =
                             <input
                                 type="checkbox"
                                 id="FilterSmartphone"
-                                value="Smartphones"
+                                value="Smartphone"
                                 className="size-5 rounded border-gray-300 category-filter"
-                                onChange={ () => handleCategoryChange('Smartphones') }
+                                onChange={ () => handleCategoryChange('Smartphone') }
                             />
                             <span className="text-sm font-medium text-gray-700">Smartphone</span>
                         </label>
@@ -48,24 +48,37 @@ const CategoryFilter = ({ categories, handleCategoryChange, resetCategories }) =
                             <input
                                 type="checkbox"
                                 id="FilterLaptop"
-                                value="Laptops"
+                                value="Laptop"
                                 className="size-5 rounded border-gray-300 category-filter"
-                                onChange={ () => handleCategoryChange('Laptops') }
+                                onChange={ () => handleCategoryChange('Laptop') }
                             />
                             <span className="text-sm font-medium text-gray-700">Laptop</span>
                         </label>
                     </li>
 
                     <li>
-                        <label htmlFor="FilterAccessory" className="inline-flex items-center gap-2">
+                        <label htmlFor="FilterAirpod" className="inline-flex items-center gap-2">
                             <input
                                 type="checkbox"
-                                id="FilterAccessory"
-                                value="Accessories"
+                                id="FilterAirpod"
+                                value="Airpod"
                                 className="size-5 rounded border-gray-300 category-filter"
-                                onChange={ () => handleCategoryChange('Accessories') }
+                                onChange={ () => handleCategoryChange('Airpod') }
                             />
-                            <span className="text-sm font-medium text-gray-700">Accessories</span>
+                            <span className="text-sm font-medium text-gray-700">Airpod</span>
+                        </label>
+                    </li>
+
+                    <li>
+                        <label htmlFor="FilterSmartWatch" className="inline-flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="FilterSmartWatch"
+                                value="Smart Watch"
+                                className="size-5 rounded border-gray-300 category-filter"
+                                onChange={ () => handleCategoryChange('Smart Watch') }
+                            />
+                            <span className="text-sm font-medium text-gray-700">Smart Watch</span>
                         </label>
                     </li>
                 </ul>

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 const generateStars = (rating) => {
     const stars = [];
+    
     for (let i = 1; i <= 5; i++) {
         stars.push(
             <svg
@@ -22,9 +23,7 @@ const Rating = ({ rating }) => {
     return (
         <div className="flex items-center mt-2.5 mb-4">
             { generateStars(Math.round(rating)) }
-            <span className="text-xs font-semibold mr-2 px-2.5 py-0.5 rounded bg-blue-200 text-blue-800 ml-3">
-                { rating.toFixed(1) }
-            </span>
+            <span className="text-xs font-semibold mr-2 px-2.5 py-0.5 rounded bg-blue-200 text-blue-800 ml-3">{ rating }</span>
         </div>
     );
 };

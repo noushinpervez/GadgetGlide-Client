@@ -29,7 +29,7 @@ const PriceFilter = ({ minPrice, maxPrice, setMinPrice, setMaxPrice }) => {
             </summary>
             <div className="border-t border-gray-200 bg-white">
                 <header className="flex items-center justify-between p-4">
-                    <p className="text-sm text-gray-700">The highest price is <span className="text-lg">৳</span>140000</p>
+                    <p className="text-sm text-gray-700">The highest price is ৳275000</p>
                     <button type="button" className="text-sm text-gray-900 underline underline-offset-4" onClick={ handleReset }>
                         Reset
                     </button>
@@ -37,7 +37,7 @@ const PriceFilter = ({ minPrice, maxPrice, setMinPrice, setMaxPrice }) => {
                 <div className="border-t border-gray-200 p-4">
                     <div className="flex justify-between gap-4">
                         <label htmlFor="FilterPriceFrom" className="flex items-center gap-2">
-                            <p className="text-sm text-gray-600"><span className="text-lg">৳</span></p>
+                            <p className="text-sm text-gray-600">৳</p>
                             <input
                                 type="number"
                                 id="FilterPriceFrom"
@@ -48,7 +48,7 @@ const PriceFilter = ({ minPrice, maxPrice, setMinPrice, setMaxPrice }) => {
                             />
                         </label>
                         <label htmlFor="FilterPriceTo" className="flex items-center gap-2">
-                            <p className="text-sm text-gray-600"><span className="text-lg">৳</span></p>
+                            <p className="text-sm text-gray-600">৳</p>
                             <input
                                 type="number"
                                 id="FilterPriceTo"
